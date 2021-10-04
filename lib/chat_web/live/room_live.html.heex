@@ -1,4 +1,4 @@
-<p>Currently chatting in <strong><%= @room_id %></strong> as <%= @username %></p>
+<p>Currently chatting in <strong><%= @room_id %></strong> as <strong><%= @username %></strong></p>
 
 <div id="chat-container">
   <div id="chat-messages" phx-update="append">
@@ -8,6 +8,13 @@
       </p>
     <% end %>
   </div>
-  <%= f = form_for :chat, "#", id: "chat-form", phx_submit: :submit_message, phx_change: :update_form %>
-  <%= text_input f, :message, value: @message, placeholder: "Enter your message..." %>
+
+  <div id="user-list">
+  <h3>Users online right now</h3>
+  <p>user1</p>
+  <p>user2</p>
+  </div>
 </div>
+
+<%= f = form_for :chat, "#", id: "chat-form", phx_submit: :submit_message, phx_change: :update_form %>
+<%= text_input f, :message, value: @message, placeholder: "Enter your message..." %>
