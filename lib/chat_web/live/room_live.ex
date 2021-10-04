@@ -28,13 +28,11 @@ defmodule ChatWeb.RoomLive do
 
   @impl true
   def handle_event("update_form", %{"chat" => %{"message" => message}}, socket) do
-    Logger.info(message: message)
     {:noreply, assign(socket, message: message)}
   end
 
   @impl true
   def handle_info(%{event: "new-message", payload: message}, socket) do
-    Logger.info(payload: message)
     {:noreply, assign(socket, messages: [message])}
   end
   
