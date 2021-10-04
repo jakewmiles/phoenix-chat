@@ -3,13 +3,15 @@
 
 #chat-container {
   display: flex;
-  /* flex-direction: column; */
   justify-content: space-between;
-  height: 500px;
+  height: 600px;
 }
 
 #chat-messages {
+  display: flex;
   flex-grow: 1;
+  overflow: scroll;
+  flex-direction: column-reverse;
   padding: 1em;
   margin: -1em 1em 1em -1em;
   border: 1px solid #cccccc;
