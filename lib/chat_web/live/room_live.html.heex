@@ -1,10 +1,10 @@
-<p>Currently chatting in <strong><%= @room_id %></strong> as <strong><%= @username %></strong></p>
+<p>Currently chatting in <strong><%= @room_id %></strong> as <%= @username %></p>
 
 <div id="chat-container">
   <div id="chat-messages" phx-update="append">
     <%= for message <- @messages do %>
       <p id={message.uuid}>
-        <%= message.content %>
+        <strong><%= message.username %>:</strong> <%= message.content %>
       </p>
     <% end %>
   </div>
