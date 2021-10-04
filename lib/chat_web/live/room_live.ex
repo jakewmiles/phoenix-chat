@@ -6,13 +6,15 @@ defmodule ChatWeb.RoomLive do
   @impl true
   def mount(%{"id" => room_id}, _session, socket) do
     topic = "room:" <> room_id
+    username = MnemonicSlugs.generate_slug(2)
      if connected?(socket), do: ChatWeb.Endpoint.subscribe(topic)
     {:ok, assign(
       socket, 
       room_id: room_id, 
       topic: topic, 
+      username: username,
       message: "",
-      messages: [%{uuid: UUID.uuid4(), content: "Twitch joined the chat!"}], 
+      messages: [%{uuid: UUID.uuid4(), content: "#{username} joined the chat!"}], 
       temporary_assigns: [messages: []]
     )}
   end
