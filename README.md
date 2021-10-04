@@ -1,4 +1,8 @@
-# Chat
+# phoenix-chat
+
+### phoenix-chat is a chat app that allows multiple users to connect to different chatrooms. Chatroom names and usernames are based on randomly generated slugs.
+
+---
 
 To start your Phoenix server:
 
@@ -7,9 +11,9 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+---
 
-## Learn more
+## Learn more about Phoenix Framework
 
   * Official website: https://www.phoenixframework.org/
   * Guides: https://hexdocs.pm/phoenix/overview.html
