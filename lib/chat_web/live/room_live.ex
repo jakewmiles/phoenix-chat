@@ -17,7 +17,7 @@ defmodule ChatWeb.RoomLive do
       topic: topic, 
       username: username,
       message: "",
-      messages: [%{uuid: UUID.uuid4(), content: "#{username} joined the chat!", username: "system"}], 
+      messages: [], 
       temporary_assigns: [messages: []]
     )}
   end
@@ -41,17 +41,37 @@ defmodule ChatWeb.RoomLive do
 
   @impl true
   def handle_info(%{event: "presence_diff", payload: %{joins: joins, leaves: leaves}}, socket) do
-    Logger.info(joins: joins, leaves: leaves)
     join_messages =
       joins
       |> Map.keys()
-      |> Enum.map(fn username -> %{uuid: UUID.uuid4(), content: "#{username} joined", username: "system"} end)
+      |> Enum.map(fn username -> 
+        %{type: :system,
+        uuid: UUID.uuid4(), 
+        content: "#{username} joined", 
+        username: "system"} end)
 
     leave_messages =
       leaves
       |> Map.keys()
-      |> Enum.map(fn username -> %{uuid: UUID.uuid4(), content: "#{username} left", username: "system"} end)
+      |> Enum.map(fn username -> 
+        %{type: :system,
+        uuid: UUID.uuid4(), 
+        content: "#{username} left", 
+        username: "system"} end)
     {:noreply, assign(socket, messages: join_messages ++ leave_messages)}
   end
+
+  def display_message(%{type: :system, uuid: uuid, content: content}) do
+    ~E"""
+    <p id="<%= uuid %>"><strong><%= content %></strong></p>
+    """
+  end
   
+  def display_message(%{uuid: uuid, content: content, username: username}) do
+    ~E"""
+    <p id="<%= uuid %>"><strong><%= username %></strong>: <%= content %></p>
+    """
+  end
+
+
 end
