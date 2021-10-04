@@ -8,7 +8,7 @@
   </div>
 
   <div id="user-list">
-  <h3>Users online right now</h3>
+  <h3> <%= length(@user_list) %> users online right now</h3>
   <%= for user <- @user_list do %>
     <p><%= user %></p>
   <% end %>
