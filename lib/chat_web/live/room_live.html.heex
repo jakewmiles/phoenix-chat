@@ -2,7 +2,9 @@
 
 <div id="chat-container">
   <div id="chat-messages">
-    Chat goes here!
+    <%= for message <- @messages do %>
+      <p><%= message %></p>
+    <% end %>
   </div>
   <%= f = form_for :chat, "#", id: "chat-form", phx_submit: :submit_message %>
   <%= text_input f, :message, placeholder: "Enter your message..." %>
