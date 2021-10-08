@@ -1,7 +1,6 @@
 # lib/pento_web/live/my_page_live.ex
 defmodule ChatWeb.RoomLive do
   use ChatWeb, :live_view
-  require Logger
 
   @impl true
   def mount(%{"id" => room_id}, _session, socket) do
@@ -47,7 +46,7 @@ defmodule ChatWeb.RoomLive do
   end
 
   @impl true
-  def handle_info(%{event: "finished_typing", payload: user}, socket) do
+  def handle_info(%{event: "finished_typing", payload: _user}, socket) do
     message = %{uuid: UUID.uuid4(), type: :system, content: "", username: "system"}
     {:noreply, assign(socket, is_typing_message: message)}
   end

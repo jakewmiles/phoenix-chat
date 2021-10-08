@@ -6,15 +6,18 @@
       <%= display_message(message) %>
     <% end %>
   </div>
+    
+
+  <div id="user-list">
+    <div>
+      <h3> <%= length(@user_list) %> users online right now</h3>
+      <%= for user <- @user_list do %>
+        <p><%= user %></p>
+      <% end %>
+    </div>
     <div>
       <%= display_message(@is_typing_message) %>
     </div>
-
-  <div id="user-list">
-  <h3> <%= length(@user_list) %> users online right now</h3>
-  <%= for user <- @user_list do %>
-    <p><%= user %></p>
-  <% end %>
   </div>
 </div>
 

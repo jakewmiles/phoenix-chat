@@ -26,6 +26,7 @@
 #user-list {
   width: 35%;
   display: flex;
+  justify-content: space-between;
   flex-grow: 1;
   overflow: scroll;
   flex-direction: column;
