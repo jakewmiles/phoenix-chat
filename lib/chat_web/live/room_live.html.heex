@@ -12,11 +12,11 @@
     <div>
       <p> <%= length(@user_list) %> users online right now</p>
       <%= for user <- @user_list do %>
-        <h6><%= user %></h6>
+        <p><%= user %></p>
       <% end %>
     </div>
     <div>
-      <h6><%= display_message(@is_typing_message) %></h6>
+      <p><%= display_message(@is_typing_message) %></p>
     </div>
   </div>
 </div>
