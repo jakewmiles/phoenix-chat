@@ -1,7 +1,7 @@
 # phoenix-chat
 
 
-### Built on Elixir, Phoenix and Phoenix LiveView
+### Built on Elixir, Phoenix (1.6) and Phoenix LiveView
 
 <img src="https://j.gifs.com/LZPG7p.gif" width="570" height="328"/>
 
