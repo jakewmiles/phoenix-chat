@@ -10,18 +10,18 @@ defmodule ChatWeb.RoomLive do
       ChatWeb.Endpoint.subscribe(topic)
       ChatWeb.Presence.track(self(), topic, username, %{})
     end
-    {:ok, assign(
-      socket, 
-      is_typing_user: "",
-      is_typing_message: %{content: "", type: :system, username: "system", uuid: UUID.uuid4()},
-      room_id: room_id, 
-      topic: topic, 
-      username: username,
-      user_list: [],
-      message: "",
-      messages: [], 
-      temporary_assigns: [messages: []]
-    )}
+    {:ok,
+      socket
+      |> assign(is_typing_user: "")
+      |> assign(is_typing_message: %{content: "", type: :system, username: "system", uuid: UUID.uuid4()})
+      |> assign(room_id: room_id) 
+      |> assign(topic: topic) 
+      |> assign(username: username)
+      |> assign(user_list: [])
+      |> assign(message: "")
+      |> assign(messages: []) 
+      |> assign(temporary_assigns: [messages: []])
+    }
   end
 
   @impl true
@@ -37,24 +37,37 @@ defmodule ChatWeb.RoomLive do
   @impl true
   def handle_event("update_form", %{"chat" => %{"message" => message}}, socket) do
     ChatWeb.Endpoint.broadcast(socket.assigns.topic, "is_typing", socket.assigns.username)
-    {:noreply, assign(socket, message: message)}
+    {:noreply, 
+      socket
+      |> assign(message: message)
+    }
   end
 
   @impl true
   def handle_info(%{event: "new_message", payload: message}, socket) do
-    {:noreply, assign(socket, messages: [message])}
+    {:noreply, 
+      socket
+      |> assign(messages: [message])
+    }
   end
 
   @impl true
   def handle_info(%{event: "finished_typing", payload: _user}, socket) do
     message = %{uuid: UUID.uuid4(), type: :system, content: "", username: "system"}
-    {:noreply, assign(socket, is_typing_message: message)}
+    {:noreply, 
+      socket 
+      |> assign(is_typing_message: message)
+    }
   end
 
   @impl true
   def handle_info(%{event: "is_typing", payload: user}, socket) do
     message = %{uuid: UUID.uuid4(), type: :system, content: user <> " is typing...", username: "system"}
-    {:noreply, assign(socket, is_typing_user: user, is_typing_message: message)}
+    {:noreply, 
+      socket
+      |> assign(is_typing_user: user) 
+      |> assign(is_typing_message: message)
+    }
   end
 
   @impl true
@@ -80,7 +93,11 @@ defmodule ChatWeb.RoomLive do
     user_list = ChatWeb.Presence.list(socket.assigns.topic)
     |> Map.keys()
 
-    {:noreply, assign(socket, messages: join_messages ++ leave_messages, user_list: user_list)}
+    {:noreply, 
+      socket
+      |> assign(messages: join_messages ++ leave_messages)
+      |> assign(user_list: user_list)
+    }
   end
 
   def display_message(%{type: :system, uuid: uuid, content: content}) do
