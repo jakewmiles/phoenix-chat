@@ -13,6 +13,8 @@ defmodule ChatWeb.RoomLive do
     end
     {:ok, assign(
       socket, 
+      is_typing_user: "",
+      is_typing_message: %{content: "", type: :system, username: "system", uuid: UUID.uuid4()},
       room_id: room_id, 
       topic: topic, 
       username: username,
@@ -26,18 +28,34 @@ defmodule ChatWeb.RoomLive do
   @impl true
   def handle_event("submit_message", %{"chat" => %{"message" => message}}, socket) do
     message = %{uuid: UUID.uuid4(), content: message, username: socket.assigns.username}
-    ChatWeb.Endpoint.broadcast(socket.assigns.topic, "new-message", message)
-    {:noreply, assign(socket, message: "")}
+    
+    ChatWeb.Endpoint.broadcast(socket.assigns.topic, "new_message", message)
+    is_typing = %{uuid: UUID.uuid4(), type: :system, content: "", username: "system"}
+    ChatWeb.Endpoint.broadcast(socket.assigns.topic, "finished_typing", socket.assigns.username)
+    {:noreply, assign(socket, message: "", is_typing_message: is_typing)}
   end
 
   @impl true
   def handle_event("update_form", %{"chat" => %{"message" => message}}, socket) do
+    ChatWeb.Endpoint.broadcast(socket.assigns.topic, "is_typing", socket.assigns.username)
     {:noreply, assign(socket, message: message)}
   end
 
   @impl true
-  def handle_info(%{event: "new-message", payload: message}, socket) do
+  def handle_info(%{event: "new_message", payload: message}, socket) do
     {:noreply, assign(socket, messages: [message])}
+  end
+
+  @impl true
+  def handle_info(%{event: "finished_typing", payload: user}, socket) do
+    message = %{uuid: UUID.uuid4(), type: :system, content: "", username: "system"}
+    {:noreply, assign(socket, is_typing_message: message)}
+  end
+
+  @impl true
+  def handle_info(%{event: "is_typing", payload: user}, socket) do
+    message = %{uuid: UUID.uuid4(), type: :system, content: user <> " is typing...", username: "system"}
+    {:noreply, assign(socket, is_typing_user: user, is_typing_message: message)}
   end
 
   @impl true
@@ -63,7 +81,6 @@ defmodule ChatWeb.RoomLive do
     user_list = ChatWeb.Presence.list(socket.assigns.topic)
     |> Map.keys()
 
-    Logger.info(user_list)
     {:noreply, assign(socket, messages: join_messages ++ leave_messages, user_list: user_list)}
   end
 

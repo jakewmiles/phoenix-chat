@@ -6,6 +6,9 @@
       <%= display_message(message) %>
     <% end %>
   </div>
+    <div>
+      <%= display_message(@is_typing_message) %>
+    </div>
 
   <div id="user-list">
   <h3> <%= length(@user_list) %> users online right now</h3>
@@ -15,5 +18,7 @@
   </div>
 </div>
 
-<%= f = form_for :chat, "#", id: "chat-form", phx_submit: :submit_message, phx_change: :update_form %>
-<%= text_input f, :message, value: @message, placeholder: "Enter your message..." %>
+<div >
+  <%= f = form_for :chat, "#", id: "chat-form", phx_submit: :submit_message, phx_change: :update_form%>
+  <%= text_input f, :message, value: @message, placeholder: "Enter your message..." %>
+</div>
